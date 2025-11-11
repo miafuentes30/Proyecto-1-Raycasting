@@ -2,7 +2,12 @@
 
 Raycaster esta desarrollado en Rust como proyecto del curso de Gráficas por Computadora. Un juego de exploración con perspectiva first-person donde debes navegar por laberintos evitando obstáculos peligrosos (lava) para llegar a la meta.
 
+
 ![Juego](assets/gif/proyect1.gif)
+
+
+Si no logra visualizar el .gif en el apartado de arriba, por favor ingrese al siguiente enlace para ver el video: 
+https://www.canva.com/design/DAG4bDh6sXA/Or-gI1wo2eDjqyOd17-YtA/edit?utm_content=DAG4bDh6sXA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 ## De qué trata el juego
 
