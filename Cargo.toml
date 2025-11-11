@@ -6,6 +6,7 @@ edition = "2024"
 [dependencies]
 pixels = "0.13.0"
 winit  = "=0.28.7"
-
 log = "0.4"
 env_logger = "0.11"
+rodio = { version = "0.17", default-features = false, features = ["mp3", "vorbis", "wav"] }
+once_cell = "1.19"
