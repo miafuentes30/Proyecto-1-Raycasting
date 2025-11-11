@@ -48,8 +48,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/tu-usuario/raycaster-project.git
-cd raycaster-project
+git clone https://github.com/miafuentes30/Proyecto-1-Raycasting.git
 
 # 2. Compilar y ejecutar (modo release para mejor rendimiento)
 cargo run --release
