@@ -6,6 +6,7 @@ Un juego de exploración de mazmorras. Fue implementado con técnicas de raycast
 
 Es un juego de exploración en mazmorras oscuras. El jugador debe navegar por laberintos peligrosos, evitar a los diablitos, recolectar todos los cofres y encontrar la salida para avanzar al siguiente nivel.
 
+Video de demostración: https://www.canva.com/design/DAG4bDh6sXA/Or-gI1wo2eDjqyOd17-YtA/edit?utm_content=DAG4bDh6sXA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 ## Objetivo del Juego
 
@@ -59,25 +60,25 @@ Si no tienes Rust instalado, descárgalo desde [rustup.rs](https://rustup.rs/)
 ### Pasos para Ejecutar:
 
 1. **Clonar o descargar el proyecto**:
-   `ash
+```bash
    git clone https://github.com/miafuentes30/Proyecto-1-Raycasting.git
    cd Proyecto-1-Raycasting
-   `
+```
 
 2. **Ejecutar en modo debug** (más lento, útil para desarrollo):
-   `ash
+```bash
    cargo run
-   `
+```
 
 3. **Ejecutar en modo release** (optimizado, recomendado para jugar):
-   `ash
+```bash
    cargo run --release
-   `
+```
 
 4. **Compilar sin ejecutar**:
-   `ash
+```bash
    cargo build --release
-   `
+```
    El ejecutable estará en 	arget/release/
 
 ### Solución de Problemas:
@@ -88,7 +89,7 @@ Si no tienes Rust instalado, descárgalo desde [rustup.rs](https://rustup.rs/)
 
 ## Estructura del Proyecto
 
-`
+```bash
 Proyecto-1-Raycasting/
 ├── src/
 │   ├── main.rs           # Punto de entrada, loop principal del juego
@@ -129,7 +130,7 @@ Proyecto-1-Raycasting/
 │
 ├── Cargo.toml            # Configuración del proyecto y dependencias
 └── README.md             # Este archivo
-`
+```
 
 ## Tecnologías Utilizadas
 
@@ -138,11 +139,12 @@ Proyecto-1-Raycasting/
 - **rodio**: Biblioteca de audio
 
 ### Dependencias principales (Cargo.toml):
-`	oml
+```bash
+oml
 [dependencies]
 raylib = "5.0"
 rodio = "0.19"
-`
+```
 
 ## Elementos del Juego
 
