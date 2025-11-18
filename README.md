@@ -1,107 +1,165 @@
-# Raycaster
+﻿# Proyecto 1 Raycaster 
 
-Raycaster esta desarrollado en Rust como proyecto del curso de Gráficas por Computadora. Un juego de exploración con perspectiva first-person donde debes navegar por laberintos evitando obstáculos peligrosos (lava) para llegar a la meta.
+Un juego de exploración de mazmorras. Fue implementado con técnicas de raycasting en Rust, utilizando raylib para gráficos.
+
+## Descripción del Juego
+
+Es un juego de exploración en mazmorras oscuras. El jugador debe navegar por laberintos peligrosos, evitar a los diablitos, recolectar todos los cofres y encontrar la salida para avanzar al siguiente nivel.
 
 
-![Juego](assets/gif/proyect1.gif)
+## Objetivo del Juego
 
+### Para Ganar:
+1. **Recolectar TODOS los cofres** del nivel actual
+2. **Encontrar la salida** marcada con 'E' (aparece en verde en el minimapa)
+3. **Llegar a la salida** para avanzar al siguiente nivel
+4. **Completar los 2 niveles** para ganar el juego
 
-Si no logra visualizar el .gif en el apartado de arriba, por favor ingrese al siguiente enlace para ver el video: 
-https://www.canva.com/design/DAG4bDh6sXA/Or-gI1wo2eDjqyOd17-YtA/edit?utm_content=DAG4bDh6sXA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
-
-## De qué trata el juego
-
-Eres un explorador atrapado en una serie de mazmorras llenas de peligros. Tu objetivo es simple: **navegar por el laberinto y llegar al portal de salida** sin perder todas tus vidas.
-
-### Obstáculos
-- Lava: Bloques naranjas brillantes que te quitan vida al tocarlos
-- Paredes: No puedes atravesarlas, debes encontrar el camino correcto
-
-### Cómo ganar
-Encuentra y alcanza el **portal cristalino** (bloque blanco/morado brillante) para completar el nivel. Si pierdes todas tus vidas, respawneas en el inicio del nivel.
-
-### Niveles disponibles
-1. **Nivel 1 - Easy**: Tutorial básico con pocas trampas
-2. **Nivel 2 - Complicado**: Laberinto más complejo con más áreas de lava
+### Condiciones de Derrota:
+- Si tu vida llega a 0, aparecerá la pantalla de Game Over
+- Puedes reintentar presionando 'R' o volver al menú con 'M'
 
 ## Controles
 
-### Movimiento
-- **W** - Avanzar
-- **S** - Retroceder  
-- **A** - Moverse a la izquierda
-- **D** - Moverse a la derecha
-- **Mouse** - Rotar la cámara (horizontal)
+### Movimiento:
+- **W / Flecha Arriba**: Avanzar
+- **S / Flecha Abajo**: Retroceder
+- **A**: Moverse a la izquierda (strafe)
+- **D**: Moverse a la derecha (strafe)
 
-### Menú y Sistema
-- **1 / 2** - Seleccionar nivel en el menú principal
-- **Enter** - Comenzar juego
-- **ESC** - Pausar / Volver al menú
-- **Tab** - Liberar mouse (útil para salir de fullscreen)
-- **Space** - Continuar después de ganar
+### Cámara:
+- **Ratón (movimiento horizontal)**: Rotar la cámara/vista
+- **Flecha Izquierda**: Rotar a la izquierda
+- **Flecha Derecha**: Rotar a la derecha
 
-## Cómo ejecutar el programa
+### Acciones:
+- **F**: Encender/Apagar linterna
+- **ESC**: Abrir menú / Salir del juego
 
-### Prerrequisitos
-Necesitas tener instalado Rust. Si no lo tienes:
-```bash
-# Windows / Linux / Mac
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-```
+### Menú:
+- **1**: Seleccionar Nivel 1
+- **2**: Seleccionar Nivel 2
+- **ENTER**: Iniciar juego
+- **ESC**: Salir del juego
 
-### Instalación y ejecución
+### Pantallas de Fin:
+- **R**: Reiniciar nivel (Game Over)
+- **M**: Volver al menú principal
 
-```bash
-# 1. Clonar el repositorio
-git clone https://github.com/miafuentes30/Proyecto-1-Raycasting.git
+## Cómo Ejecutar el Programa
 
-# 2. Compilar y ejecutar (modo release para mejor rendimiento)
-cargo run --release
+### Requisitos Previos:
+- **Rust** (versión 1.70 o superior)
+- **Cargo** (incluido con Rust)
+- Sistema operativo: Windows, Linux o macOS
 
-# Opcional: solo compilar
-cargo build --release
-# El ejecutable quedará en: target/release/raycaster-project
-```
+### Instalación de Rust:
+Si no tienes Rust instalado, descárgalo desde [rustup.rs](https://rustup.rs/)
 
-### Si tienes problemas con audio
-El juego funciona sin archivos de audio. Si ves errores relacionados con sonido, simplemente ignóralos - el juego seguirá funcionando normalmente.
+### Pasos para Ejecutar:
 
+1. **Clonar o descargar el proyecto**:
+   `ash
+   git clone https://github.com/miafuentes30/Proyecto-1-Raycasting.git
+   cd Proyecto-1-Raycasting
+   `
 
-## Estructura del proyecto
+2. **Ejecutar en modo debug** (más lento, útil para desarrollo):
+   `ash
+   cargo run
+   `
 
-```
-raycaster-project/
+3. **Ejecutar en modo release** (optimizado, recomendado para jugar):
+   `ash
+   cargo run --release
+   `
+
+4. **Compilar sin ejecutar**:
+   `ash
+   cargo build --release
+   `
+   El ejecutable estará en 	arget/release/
+
+### Solución de Problemas:
+
+- **Error de audio**: Si el audio falla al iniciar, verifica que tu sistema tenga dispositivos de audio disponibles
+- **FPS bajos**: Asegúrate de ejecutar en modo --release
+- **Texturas no cargan**: Verifica que la carpeta ssets/ esté en el mismo directorio que el ejecutable
+
+## Estructura del Proyecto
+
+`
+Proyecto-1-Raycasting/
 ├── src/
-│   ├── main.rs         # Loop principal y eventos
-│   ├── raycaster.rs    # Motor de raycasting
-│   ├── player.rs       # Lógica del jugador
-│   ├── map.rs          # Definición de niveles
-│   ├── draw.rs         # UI y efectos visuales
-│   └── util.rs         # Utilidades
+│   ├── main.rs           # Punto de entrada, loop principal del juego
+│   ├── audio.rs          # Sistema de audio (música y efectos de sonido)
+│   ├── caster.rs         # Algoritmo de raycasting y detección de colisiones
+│   ├── enemy.rs          # Lógica de enemigos y IA
+│   ├── framebuffer.rs    # Buffer de píxeles para renderizado
+│   ├── input.rs          # Manejo de entrada del usuario
+│   ├── intersect.rs      # Estructuras de intersección de rayos
+│   ├── line.rs           # Utilidades para dibujar líneas
+│   ├── maze.rs           # Carga y gestión de laberintos
+│   ├── player.rs         # Jugador, movimiento y estado
+│   ├── renderer.rs       # Renderizado 3D y sprites
+│   ├── texture.rs        # Gestor de texturas e imágenes
+│   └── ui.rs             # Interfaz de usuario (HUD, menú, pantallas)
+│
 ├── assets/
-│   └── audio/          # Archivos de audio (opcional)
-│   └── gif/          # Archivos de audio (opcional)
-├── Cargo.toml
-└── README.md
-```
+│   ├── levels/
+│   │   ├── maze.txt      # Nivel 1
+│   │   └── maze2.txt     # Nivel 2
+│   ├── textures/
+│   │   ├── caja2.png     # Textura de pared normal
+│   │   ├── caja3.png     # Textura de ladrillo
+│   │   ├── caja4.png     # Textura especial
+│   │   ├── caja5.png     # Textura de puerta
+│   │   ├── tuveria1.png  # Textura de tubería 1
+│   │   └── tuveria2.png  # Textura de tubería 2
+│   ├── sprites/
+│   │   ├── enemy.png     # Sprite de enemigo
+│   │   ├── chest.png     # Sprite de cofre
+│   │   ├── player_anim.png
+│   │   └── work.png
+│   └── audio/
+│       ├── music.mp3     # Música de fondo
+│       ├── collect.wav   # Sonido de recolección
+│       ├── damage.wav    # Sonido de daño
+│       └── footstep.wav  # Sonido de pasos
+│
+├── Cargo.toml            # Configuración del proyecto y dependencias
+└── README.md             # Este archivo
+`
 
-## Tipos de bloques/texturas
+## Tecnologías Utilizadas
 
-El juego usa texturas procedurales generadas por código:
+- **Rust**: Lenguaje de programación principal
+- **raylib-rs**: Biblioteca de gráficos y manejo de ventanas
+- **rodio**: Biblioteca de audio
 
-| Color/Textura | Tipo | Efecto |
-|---------------|------|--------|
-| Rojo oscuro | Ladrillos | Bloquea paso |
-| Verde | Piedra con musgo | Bloquea paso |
-| Azul | Azulejos | Bloquea paso |
-| Dorado | Oro metálico | Bloquea paso |
-| Naranja/Rojo | Lava | ¡Causa daño! |
-| Cian/Morado | Portal | ¡Meta del nivel! |
+### Dependencias principales (Cargo.toml):
+`	oml
+[dependencies]
+raylib = "5.0"
+rodio = "0.19"
+`
 
+## Elementos del Juego
 
-## Tecnologías usadas
+### Símbolos del Mapa:
+- # - Pared normal (textura de caja)
+- L - Pared de ladrillo
+- $ - Puerta/Pared oscura
+- T, P - Tuberías decorativas
+- p - Posición inicial del jugador
+- F - Enemigo
+- C - Cofre
+- E - Salida del nivel
 
-- **Lenguaje**: Rust 
-- **Renderizado**: pixels (frame buffer directo)
-- **Ventanas**: winit
-- **Audio**: rodio
+### HUD (Heads-Up Display):
+- **Barra de vida**: Esquina inferior izquierda (verde/amarillo/rojo)
+- **Contador de cofres**: Muestra cofres recolectados/totales
+- **FPS**: Esquina superior derecha
+- **Nivel actual**: "Nivel X/2"
+- **Batería de linterna**: Porcentaje de carga
+- **Minimapa**: Esquina superior derecha

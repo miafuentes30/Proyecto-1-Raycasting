@@ -1,57 +1,112 @@
-use crate::map::Map;
+use raylib::math::Vector2;
 
 pub struct Player {
-    pub x: f32,
-    pub y: f32,
-    pub ang: f32,
+    pub pos: Vector2,
+    pub a: f32,
     pub fov: f32,
-    pub speed: f32,
-    pub life: i32, 
+    pub health: i32,
+    pub max_health: i32,
+    pub has_flashlight: bool,
+    pub flashlight_battery: f32,
 }
 
 impl Player {
     pub fn new(x: f32, y: f32) -> Self {
-        Self { x, y, ang: 0.0, fov: 1.0, speed: 2.8, life: 5 }
-    }
-    
-    pub fn add_yaw(&mut self, dx: f32) {
-        self.ang += (dx as f32) * 0.0025;
-    }
-
-    // Funcion auxiliar para verificar si una posición es valida
-    fn can_move_to(&self, map: &Map, x: f32, y: f32) -> bool {
-        let tile = map.at(x.floor() as i32, y.floor() as i32);
-        tile == 0 || tile == 5 || tile == 9  
+        Player {
+            pos: Vector2::new(x, y),
+            a: std::f32::consts::PI / 3.0,
+            fov: std::f32::consts::PI / 3.0,
+            health: 100,
+            max_health: 100,
+            has_flashlight: true,
+            flashlight_battery: 100.0,
+        }
     }
 
-    pub fn try_move(&mut self, dir_x: f32, dir_y: f32, dt: f32, map: &Map) {
-        let step = self.speed * dt;
-        let nx = self.x + dir_x * step;
-        let ny = self.y + dir_y * step;
+    pub fn rotate(&mut self, angle: f32) {
+        self.a += angle;
+        self.a = self.a % (2.0 * std::f32::consts::PI);
+        if self.a < 0.0 {
+            self.a += 2.0 * std::f32::consts::PI;
+        }
+    }
 
-        // Sistema de colisiones 
-        if self.can_move_to(map, nx, self.y) {
-            self.x = nx;
-        } else {
-            let small_step_x = self.x + dir_x * step * 0.1;
-            if self.can_move_to(map, small_step_x, self.y) {
-                self.x = small_step_x;
+    pub fn move_forward(&mut self, distance: f32, maze: &super::maze::Maze) -> bool {
+        let new_x = self.pos.x + distance * self.a.cos();
+        let new_y = self.pos.y + distance * self.a.sin();
+        self.try_move(new_x, new_y, maze)
+    }
+
+    pub fn move_backward(&mut self, distance: f32, maze: &super::maze::Maze) -> bool {
+        let new_x = self.pos.x - distance * self.a.cos();
+        let new_y = self.pos.y - distance * self.a.sin();
+        self.try_move(new_x, new_y, maze)
+    }
+
+    pub fn try_move(&mut self, new_x: f32, new_y: f32, maze: &super::maze::Maze) -> bool {
+        let steps = 6;
+        let dx = (new_x - self.pos.x) / steps as f32;
+        let dy = (new_y - self.pos.y) / steps as f32;
+        let mut nx = self.pos.x;
+        let mut ny = self.pos.y;
+
+        for _ in 0..steps {
+            nx += dx;
+            ny += dy;
+
+            let block_size = 20.0;
+            let i = (nx / block_size) as isize;
+            let j = (ny / block_size) as isize;
+
+            if j < 0 || i < 0 {
+                return false;
+            }
+
+            let j_usize = j as usize;
+            let i_usize = i as usize;
+
+            if j_usize >= maze.len() || i_usize >= maze[0].len() {
+                return false;
+            }
+
+            let cell = maze[j_usize][i_usize];
+
+            // Detectar puerta o salida
+            if cell == '$' || cell == 'E' {
+                self.pos.x = nx;
+                self.pos.y = ny;
+                return cell == 'E'; // Solo retorna true si es salida 'E'
+            }
+
+            if cell == '#' || cell == 'L' {
+                return false;
             }
         }
 
-        if self.can_move_to(map, self.x, ny) {
-            self.y = ny;
-        } else {
-            let small_step_y = self.y + dir_y * step * 0.1;
-            if self.can_move_to(map, self.x, small_step_y) {
-                self.y = small_step_y;
-            }
-        }
+        self.pos.x = new_x;
+        self.pos.y = new_y;
+        false
+    }
 
-        // daño por lava
-        let tile = map.at(self.x.floor() as i32, self.y.floor() as i32);
-        if tile == 5 {
-            if self.life > 0 { self.life -= 1; }
+    pub fn take_damage(&mut self, damage: i32) {
+        self.health = (self.health - damage).max(0);
+    }
+
+    pub fn heal(&mut self, amount: i32) {
+        self.health = (self.health + amount).min(self.max_health);
+    }
+
+    pub fn is_alive(&self) -> bool {
+        self.health > 0
+    }
+
+    pub fn use_flashlight(&mut self, delta_time: f32) {
+        if self.has_flashlight && self.flashlight_battery > 0.0 {
+            self.flashlight_battery = (self.flashlight_battery - 10.0 * delta_time).max(0.0);
         }
+    }
+
+    pub fn recharge_flashlight(&mut self, amount: f32) {
+        self.flashlight_battery = (self.flashlight_battery + amount).min(100.0);
     }
 }
